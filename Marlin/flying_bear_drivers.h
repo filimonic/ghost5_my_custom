@@ -8,5 +8,6 @@
 #define RN13_ALL2208    4
 #define RN13_A4988_2208 5
 #define RN13S           6
+#define RN11_2225_FIL   7
 
 #endif

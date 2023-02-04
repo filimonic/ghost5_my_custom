@@ -38,12 +38,26 @@ RN13_A4988_2208 - плата Robin Nano v1.3, 2 драйвра A4988, 2 драй
 RN13S           - плата Robin Nano-s 1.3
 */
 #ifndef AUTO_BUILD
-  #define PRINTER_DRV_TYPE RN11_ALL_2208
+  #define PRINTER_DRV_TYPE RN11_2225_FIL
 #endif
 
 #if PRINTER_DRV_TYPE == RN11_ALL_2208
   #define USR_E0_DIR true
   #define USR_E0_TYPE TMC2208_STANDALONE
+  
+  #define USR_X_DIR false
+  #define USR_X_TYPE TMC2208_STANDALONE
+  
+  #define USR_Y_DIR false
+  #define USR_Y_TYPE TMC2208_STANDALONE
+  
+  #define USR_Z_DIR true
+  #define USR_Z_TYPE TMC2208_STANDALONE
+#endif
+
+#if PRINTER_DRV_TYPE == RN11_2225_FIL
+  #define USR_E0_DIR false
+  #define USR_E0_TYPE A4988
   
   #define USR_X_DIR false
   #define USR_X_TYPE TMC2208_STANDALONE
@@ -182,7 +196,7 @@ RN13S           - плата Robin Nano-s 1.3
 // @section info
 
 // Author info of this build printed to the host during boot and M115
-#define STRING_CONFIG_H_AUTHOR "(Sergey, FlyingbearGhost4S/5)" // Who made the changes.
+#define STRING_CONFIG_H_AUTHOR "(ADF,FlyingbearGhost5)" // Who made the changes.
 //#define CUSTOM_VERSION_FILE Version.h // Path from the root directory (no quotes)
 
 /**
@@ -1289,7 +1303,12 @@ RN13S           - плата Robin Nano-s 1.3
  * Override with M92
  *                                      X, Y, Z [, I [, J [, K...]]], E0 [, E1[, E2...]]
  */
-#define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 400, 400 }
+#if PRINTER_DRV_TYPE != RN11_2225_FIL
+  #define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 400, 400 }
+#else
+  #define DEFAULT_AXIS_STEPS_PER_UNIT   { 160, 160, 800, 160 }
+#endif
+
 
 /**
  * Default Max Feed Rate (linear=mm/s, rotational=°/s)
@@ -1895,7 +1914,7 @@ RN13S           - плата Robin Nano-s 1.3
  */
 #define FILAMENT_RUNOUT_SENSOR
 #if ENABLED(FILAMENT_RUNOUT_SENSOR)
-  #define FIL_RUNOUT_ENABLED_DEFAULT false // Enable the sensor on startup. Override with M412 followed by M500.
+  #define FIL_RUNOUT_ENABLED_DEFAULT true // Enable the sensor on startup. Override with M412 followed by M500.
   #define NUM_RUNOUT_SENSORS   1          // Number of sensors, up to one per extruder. Define a FIL_RUNOUT#_PIN for each.
   
   #ifdef  PRINTER_NAME_FB5
@@ -1957,7 +1976,7 @@ RN13S           - плата Robin Nano-s 1.3
   // After a runout is detected, continue printing this length of filament
   // before executing the runout script. Useful for a sensor at the end of
   // a feed tube. Requires 4 bytes SRAM per sensor, plus 4 bytes overhead.
-  #define FILAMENT_RUNOUT_DISTANCE_MM 500
+  #define FILAMENT_RUNOUT_DISTANCE_MM 25
 
   #ifdef FILAMENT_RUNOUT_DISTANCE_MM
     // Enable this option to use an encoder disc that toggles the runout pin
@@ -2383,11 +2402,11 @@ EEPROM_W25Q
 #define PREHEAT_1_TEMP_HOTEND  235
 #define PREHEAT_1_TEMP_BED     80
 #define PREHEAT_1_FAN_SPEED     0 // Value from 0 to 255
-
-#define PREHEAT_2_LABEL       "ABS"
-#define PREHEAT_2_TEMP_HOTEND  250
-#define PREHEAT_2_TEMP_BED     100
-#define PREHEAT_2_FAN_SPEED     0 // Value from 0 to 255
+//
+//#define PREHEAT_2_LABEL       "ABS"
+//#define PREHEAT_2_TEMP_HOTEND  250
+//#define PREHEAT_2_TEMP_BED     100
+//#define PREHEAT_2_FAN_SPEED     0 // Value from 0 to 255
 
 // @section motion
 
